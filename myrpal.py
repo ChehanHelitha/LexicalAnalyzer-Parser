@@ -8,7 +8,7 @@ from collections import namedtuple
 # Basic character sets
 LETTER = r"[a-zA-Z]"
 DIGIT = r"[0-9]"
-OPERATOR_SYMBOL = r"[+\-*/<>&.@/:=~|$!#%^_[\]{}\"`?]" # Removed '-' from here initially as it conflicts with integers/negation
+OPERATOR_SYMBOL = r"[+\-*/<>&.@/:=~|$!#%^_[\]{}\"`?]" # Removed '-' from here initially as it conflicts with integer's negation
 UNDERSCORE = r"_"
 
 # Token Regex Patterns (Order matters!)
