@@ -1,4 +1,7 @@
-let Sum(A) = Psum (A,Order A )
-		where rec Psum (T,N) = N eq 0 -> 0
-                                  | Psum(T,N-1)+T N
-in Print ( Sum (1,2,3,4,5) )
+let findMax a b c=
+    (Isinteger a) & (Isinteger b) & (Isinteger c) ->
+        a > b ->
+           a > c-> a|c
+        | b > c->b|c
+    |'Error'
+in Print(findMax 4 (-3) 2)

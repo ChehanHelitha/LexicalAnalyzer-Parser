@@ -537,20 +537,28 @@ class Parser:
     #    -> '(' Vl ')'
     #    -> '(' ')' => '()'
     def _parse_Vb(self):
-        if self.current_token.type == 'IDENTIFIER':
-            id_token = self._advance()
-            return Node('ID', value=id_token.value)
-        elif self.current_token.type == 'L_PAREN':
+     if self.current_token is None:
+        raise SyntaxError("Unexpected end of input while parsing Vb")
+
+     if self.current_token.type == 'IDENTIFIER':
+        id_token = self._advance()
+        return Node('ID', value=id_token.value)
+
+     elif self.current_token.type == 'L_PAREN':
+        self._advance()
+        if self.current_token is None:
+            raise SyntaxError("Expected ')' after '(' in Vb, but found end of input")
+
+        if self.current_token.type == 'R_PAREN':
             self._advance()
-            if self.current_token.type == 'R_PAREN': # Special case for ()
-                self._advance()
-                return Node('()')
-            else:
-                vl_node = self._parse_Vl()
-                self._expect('R_PAREN')
-                return vl_node # Return the Vl node directly (often a comma list)
+            return Node('()')
         else:
-             raise SyntaxError(f"Expected IDENTIFIER or '(' for Vb but got {self.current_token.type} at line {self.current_token.line}")
+            vl_node = self._parse_Vl()
+            self._expect('R_PAREN')
+            return vl_node
+
+     else:
+        raise SyntaxError(f"Expected IDENTIFIER or '(' for Vb but got {getattr(self.current_token, 'type', 'None')} at line {getattr(self.current_token, 'line', '?')}") 
 
     # Vl -> '<IDENTIFIER>' list ',' => ','?
     # Simplified: Parses one or more comma-separated identifiers
