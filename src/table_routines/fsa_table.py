@@ -1,15 +1,17 @@
-# Placeholder for the state transition table of an FSA lexer.
-# The table would define transitions like:
-# (current_state, character_category) -> next_state
-# The current regex-based lexer in screener.py does not use this.
-
-# Example structure (if implemented):
-# FSA_TABLE = {
-#     0: {'LETTER': 1, 'DIGIT': 2, 'OPERATOR': 3, ...}, # Start state
-#     1: {'LETTER': 1, 'DIGIT': 1, '_': 1, ...},       # In identifier state
-#     2: {'DIGIT': 2, ...},                             # In integer state
-#     3: {'OPERATOR': 3, ...},                          # In operator state
-#     # ... etc ...
-# }
-
-# print("Note: fsa_table.py is a placeholder for FSA-based lexing.")
+class FSATable:
+    def _init_(self):
+          self.fsaTable = [
+            [ 1,  1,  2, -1,  3, 11, -1,  5,  6,  7,  8,  4,  4,  4,  3],
+            [ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+            [-1, -1,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+            [-1, -1, -1, -1,  3, -1, -1, -1, -1, -1, -1, -1, -1, -1, 10],
+            [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4,  4,  4, -1],
+            [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+            [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+            [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+            [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+            [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+            [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,  4, 10],
+            [11, 11, 11, 11, 11,  9, 12, 11, 11, 11, 11, 11, -1, -1, 11],
+            [-1, 11, -1, -1, -1, 11, 11, -1, -1, -1, -1, -1, -1, -1, -1],
+        ]
