@@ -1,20 +1,37 @@
-from collections import namedtuple
+class Token :
+    class Token:
+          """
+          A class representing a token in a program.
+          """
+    def _init_(self,val:str,type_:str):
+         self.type=type_
+         self.value=val
+    
+    def get_val(self) -> str:
+         return self.value
+    
+    def get_type(self) ->str:
+         return self.type
+    
+    def set_type(self,type_:str):
+         self.type=type_
 
-# Token Definition
-Token = namedtuple('Token', ['type', 'value', 'line', 'column'])
+    def set_val(self,val:str):
+         self.value=val
 
-# Operator remapping (subset, others handled by keywords/grammar)
-OPERATOR_MAP = {
-    '+': '+', '-': '-', '*': '*', '/': '/', '**': '**', '<': 'ls', '>': 'gr',
-    '<=': 'le', '>=': 'ge', '=': '=', '~=': 'ne', '|': 'or', '&': '&',
-    '@': '@', '->': '->',
-    'aug': 'aug',
-    # Note: 'eq', 'ne', 'or', 'and', 'not', 'gr', 'ge', 'ls', 'le' are primarily handled as keywords
-    # but can sometimes appear as operators depending on context/lexing.
-}
+    def _str_(self):
+         return f"<{self.type}:{self.value}>"
+    
+    def _repr_(self):
+          return f"<{self.type}: {self.value}>"
+    
+    def _eq_(self,other):
+         return self.type==other.type and self.value==other.value
+    
+    def _noteq_(self,other):
+         return not self._eq_(other)
+    
+    def _hash_(self):
+         return hash((self.type,self.value))
 
-# Basic character sets (used by screener) - Keep definitions close to where used
-LETTER = r"[a-zA-Z]"
-DIGIT = r"[0-9]"
-OPERATOR_SYMBOL = r"[+\-*/<>&.@/:=~|$!#%^_[\]{}\"`?]"
-UNDERSCORE = r"_"
+         
