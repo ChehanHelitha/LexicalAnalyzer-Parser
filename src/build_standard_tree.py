@@ -1,95 +1,349 @@
-# build_standard_tree.py
+# Description:
+# This module contains the StandardTree class, which is used to build a standard tree from a given AST tree.
+# The standard tree is a transformed version of the input tree based on predefined rules and transformations outlined in the "semantics.pdf" documentation.
+
+# Usage:
+# This module provides the StandardTree class, which can be utilized to transform an input tree into a standard form.
+# The build_standard_tree method applies a series of transformations to the input tree, resulting in a standard tree.
+# Each transformation corresponds to specific cases or patterns found in the input tree's structure.
+
 from utils.node import Node
-# Import YStar and ETA from where they are now defined
-from cse_machine import YStar, ETA
-
-class StandardizerError(Exception):
-    """Custom exception for errors during AST standardization."""
-    pass
-
-# --- extract_vars function ---
-# (Content identical to the extract_vars function in the previous version)
-def extract_vars(d_node):
-    if not isinstance(d_node, Node): raise StandardizerError(f"Cannot extract vars from non-Node: {d_node!r}")
-    if d_node.type == '=':
-        vl_node = d_node.children[0]
-        if vl_node.type == ',': return vl_node.children
-        elif vl_node.type == 'ID': return [vl_node]
-        else: raise StandardizerError(f"Unexpected LHS in '=' for var extraction: {vl_node.type}")
-    elif d_node.type == 'tau':
-        vars_list = []
-        for child_def_node in d_node.children: vars_list.extend(extract_vars(child_def_node))
-        return vars_list
-    else: raise StandardizerError(f"Cannot extract vars from standardized def node '{d_node.type}'")
+from copy import deepcopy
 
 
-# --- standardize function ---
-# (Content identical to the standardize function in the previous version,
-#  it already uses YStar and ETA correctly, imports are now fixed)
-def standardize(node):
-    if not isinstance(node, Node): return node
-    std_children = [standardize(child) for child in node.children]
-    node_type = node.type
+class StandardTree:
+    """
+    StandardTree class is responsible for transforming an input Abstract Syntax Tree (AST) into a standard tree format.
 
-    if node_type == 'let':
-        if len(std_children) != 2: raise StandardizerError("let needs 2 children")
-        d_std, e_std = std_children; variables = extract_vars(d_std)
-        if not variables: raise StandardizerError("No vars in 'let' def")
-        lambda_node = Node('lambda', children=variables + [e_std])
-        return Node('gamma', children=[lambda_node, d_std])
-    elif node_type == 'where':
-        if len(std_children) != 2: raise StandardizerError("where needs 2 children")
-        e_std, dr_std = std_children; variables = extract_vars(dr_std)
-        if not variables: raise StandardizerError("No vars in 'where' def")
-        lambda_node = Node('lambda', children=variables + [e_std])
-        return Node('gamma', children=[lambda_node, dr_std])
-    elif node_type == 'function_form':
-        if len(std_children) < 2: raise StandardizerError("fcn_form needs P and E")
-        p_node, *vbs, e_std = std_children; flat_vbs = []
-        for vb in vbs:
-            if vb.type == ',': flat_vbs.extend(vb.children)
-            elif vb.type == '()': pass
-            elif vb.type == 'ID': flat_vbs.append(vb)
-            else: raise StandardizerError(f"Unexpected node type in fcn_form params: {vb.type}")
-        current_e = e_std
-        for vb_id in reversed(flat_vbs): current_e = Node('lambda', children=[vb_id, current_e])
-        return Node('=', children=[p_node, current_e])
-    elif node_type == 'lambda':
-        if len(std_children) < 1: raise StandardizerError("lambda needs body E")
-        *vbs, e_std = std_children; flat_vbs = []
-        for vb in vbs:
-            if vb.type == ',': flat_vbs.extend(vb.children)
-            elif vb.type == '()': pass
-            elif vb.type == 'ID': flat_vbs.append(vb)
-            else: raise StandardizerError(f"Unexpected node type in lambda params: {vb.type}")
-        current_e = e_std
-        for vb_id in reversed(flat_vbs): current_e = Node('lambda', children=[vb_id, current_e])
-        return current_e
-    elif node_type == 'within':
-        if len(std_children) != 2: raise StandardizerError("within needs 2 children")
-        d1_std, d2_std = std_children; vars2 = extract_vars(d2_std)
-        if not vars2: raise StandardizerError("No vars in 'within' outer def (D2)")
-        lambda_node = Node('lambda', children=vars2 + [d1_std])
-        return Node('gamma', children=[lambda_node, d2_std])
-    elif node_type == 'and': return Node('tau', children=std_children)
-    elif node_type == 'rec':
-        if len(std_children) != 1: raise StandardizerError("rec needs 1 child (Db)")
-        db_std = std_children[0]
-        if not isinstance(db_std, Node) or db_std.type != '=': raise StandardizerError(f"'rec' child must standardize to '=', got {type(db_std)}{':'+db_std.type if isinstance(db_std, Node) else ''}")
-        if len(db_std.children) != 2: raise StandardizerError("'=' in 'rec' needs P and E")
-        p_node, e_std = db_std.children
-        if not isinstance(p_node, Node) or p_node.type != 'ID': raise StandardizerError(f"'rec' only supports single var recursion (got {p_node.type})")
-        lambda_node = Node('lambda', children=[p_node, e_std])
-        ystar_node = Node('Y*') # Using YStar imported from cse_machine
-        gamma_node = Node('gamma', children=[ystar_node, lambda_node])
-        return Node('=', children=[p_node, gamma_node])
-    elif node_type == '@':
-        if len(std_children) != 3: raise StandardizerError("@ needs 3 children")
-        ap_std, id_node, r_std = std_children
-        if not isinstance(id_node, Node) or id_node.type != 'ID': raise StandardizerError(f"Expected ID node as 2nd child of @, got {id_node.type}")
-        inner_gamma = Node('gamma', children=[ap_std, id_node])
-        return Node('gamma', children=[inner_gamma, r_std])
-    else:
-        return Node(node_type, value=node.value, children=std_children)
+    The standard tree is a transformed version of the input tree based on predefined rules and transformations.
 
-# (Keep the __main__ block for direct testing if desired)
+    Attributes:
+        binary_operators (list): List of binary operators for tree transformation.
+        unary_operators (list): List of unary operators for tree transformation.
+        standard_tree (Node): The transformed standard tree.
+        status (bool): Flag to indicate transformation status. True if transformation is successful, otherwise False.
+
+    Methods:
+        build_standard_tree(tree): Builds the standard tree from the input tree.
+        _transform_let(tree): Transforms let expression into gamma expression.
+        _transform_tau(tree): Transforms tau expression into lambda expression.
+        _transform_and(tree): Transforms and expression with equality into comma expression.
+        _transform_function_form(tree): Transforms function_form expression into lambda expression.
+        _transform_lambda(tree): Transforms lambda expression.
+        _transform_within(tree): Transforms within expression.
+        _transform_uop(tree): Transforms unary operator.
+        _transform_conditional(tree): Transforms conditional expression.
+        _transform_where(tree): Transforms where expression.
+        _transform_rec(tree): Transforms rec expression.
+        _transform_op(tree): Transforms binary operator.
+        _transform_at(tree): Transforms at expression.
+    """
+
+    def _init_(self):
+
+        # Operators and unary operators for tree transformation
+        self.binary_operators = ["aug","or","&","+","-","/","**","gr","ge","ls","le","eq","ne","and"]
+        self.unary_operators = ["not", "neg"]
+
+        # Placeholder for the standard tree
+        self.standard_tree = None
+
+        # Flag to indicate transformation status
+        self.status = True
+
+    def build_standard_tree(self, tree):
+        """
+        Build the standard tree from the input tree.
+
+        Args:
+            tree (Node): The input tree to be transformed.
+        """
+
+        def traverse(tree):
+            if not tree.children:
+                return
+            else:
+                for child in tree.children:
+                    traverse(child)
+                self._apply_transformations(tree)
+
+        self.standard_tree = deepcopy(tree)
+        traverse(self.standard_tree)
+
+        self.status = True
+
+        return self.standard_tree
+
+    def _apply_transformations(self, tree):
+        """
+        Apply transformations to the input tree based on specific cases.
+
+        Args:
+            tree (Node): The input tree to be transformed.
+        """
+
+        # Store the input tree for reference
+        self.tree = tree
+
+        # Apply transformations based on specific cases
+        if tree.data == "let":  #
+            self._transform_let(tree)
+        # elif tree.data == "tau":
+        #    self._transform_tau(tree)
+        elif tree.data == "and":  #
+            self._transform_and(tree)
+        elif tree.data == "function_form":  #
+            self._transform_function_form(tree)
+        elif tree.data == "lambda":  #
+            self._transform_lambda_1(tree)
+        elif tree.data == "lambda" and (tree.children[0].data == ","):
+            self._transform_lambda_2(tree)
+        elif tree.data == "within":  #
+            self._transform_within(tree)
+        # elif tree.data in self.unary_operators:
+        #     self._transform_uop(tree)
+        # elif tree.data == "->":
+        #     self._transform_conditional(tree)
+        elif tree.data == "where":  #
+            self._transform_where(tree)
+        elif tree.data == "rec":  #
+            self._transform_rec(tree)
+        # elif tree.data in self.binary_operators:
+        #     self._transform_op(tree)
+        elif tree.data == "@":  #
+            self._transform_at(tree)
+
+    def _transform_let(self, tree):
+        """
+        Transform let expression into gamma expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        if len(tree.children) == 2 and tree.children[0].data == "=":
+            tree.data = "gamma"
+            tree.children[0].data = "lambda"
+            p = tree.children[1]
+            tree.children[1] = tree.children[0].children[1]
+            tree.children[0].children[1] = p
+
+    def _transform_tau(self, tree):
+        """
+        Transform tau expression into lambda expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        children = tree.children
+
+        for child in children:
+            tree.data = "gamma"
+            tree.children = [Node("gamma"), child]
+            tree.children[0].add_child(Node("<nil>"))
+            tree.children[0].add_child(Node("aug"))
+            tree = tree.children[0].children[1]
+
+    def _transform_and(self, tree):
+        """
+        Transform and expression with equality into comma expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        for child in tree.children:
+            if child.data != "=":
+                return
+
+        tree.data = "="
+        children = tree.children
+        tree.children = [Node(","), Node("tau")]
+
+        for child in reversed(children):
+            tree.children[0].add_child(child.children[0])
+            tree.children[1].add_child(child.children[1])
+
+    def _transform_function_form(self, tree):
+        """
+        Transform function_form expression into lambda expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+
+        if len(tree.children) >= 3:
+            tree.data = "="
+
+            p = tree.children[0]
+            v_list = tree.children[1:-1]
+            e = tree.children[-1]
+
+            tree.children = [p, Node("lambda")]
+
+            for v in v_list:
+                tree.children[1].data = "lambda"
+                tree.children[1].add_child(Node("temp"))
+                tree.children[1].add_child(v)
+                tree = tree.children[1]
+            tree.children[1] = e
+
+    def _transform_lambda_1(self, tree):
+        """
+        Transform lambda expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        if len(tree.children) >= 2:
+            v_list = tree.children[:-1]
+            e = tree.children[-1]
+            tree.children = []
+            prev = tree
+            for v in v_list:
+                tree.add_child(Node("lambda"))
+                tree.add_child(v)
+                prev = tree
+                tree = tree.children[1]
+            prev.children[1] = e
+
+    def _transform_lambda_2(self, tree):
+        """
+        Transform lambda expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        if len(tree.children) == 2:
+            e = tree.children[1]
+            v_list = tree.children[0].children
+            tree.children = [Node("Temp"), Node("gamma")]
+            for i in len(v_list):
+                tree.children[1] = Node("gamma")
+                tree.children[1].children = [Node("lambda"), Node("gamma")]
+                tree.children[1].children[0].children = [v_list[i], e]
+                tree.children[1].children[1].children = [
+                    Node("Temp"),
+                    Node(f"<INT:{i+1}>"),
+                ]
+                tree = tree.children[1].children[0]
+
+    def _transform_within(self, tree):
+        """
+        Transform within expression.
+
+        Args:
+        - tree (Node): The tree to be transformed.
+        """
+        if (
+            len(tree.children) == 2
+            and tree.children[0].data == "="
+            and tree.children[1].data == "="
+        ):
+            x1, e1 = tree.children[0].children
+            x2, e2 = tree.children[1].children
+            tree.data = "="
+            tree.children = [x2, Node("gamma")]
+            tree.children[1].children = [Node("lambda"), e1]
+            tree.children[1].children[0].children = [x1, e2]
+
+    def _transform_uop(self, tree):
+        """
+        Transform unary operator.
+
+        Args:
+            tree : The tree to transform
+        """
+        if len(tree.children) == 1:
+            e = tree.children[0]
+            tree.children = [Node(tree.data), e]
+            tree.data = "gamma"
+
+    def _transform_conditional(self, tree):
+        """
+        Transform conditional expression.
+
+        Args:
+            - tree (Node): The tree to be transformed.
+        """
+        if len(tree.children) == 3:
+            b, t, e = tree.children
+            tree.data = "gamma"
+            tree.children = [Node("gamma"), Node("<nil>")]
+            tree.children[0].children = [Node("gamma"), Node("lambda")]
+            tree.children[0].children[0].children = [Node("gamma"), Node("lambda")]
+            tree.children[0].children[1].children = [Node("()"), e]
+            tree.children[0].children[0].children[0].children = [Node("Cond"), b]
+            tree.children[0].children[0].children[1].children = [Node("()"), t]
+
+    def _transform_where(self, tree):
+        """
+        Transform where expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        if (
+            len(tree.children) == 2
+            and tree.children[1].data == "="
+            and len(tree.children[1].children) == 2
+        ):
+            p = tree.children[0]
+            x, e = tree.children[1].children
+            tree.data = "gamma"
+            tree.children = [Node("lambda"), e]
+            tree.children[0].children = [x, p]
+
+    def _transform_rec(self, tree):
+        """
+        Transform rec expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        if len(tree.children) == 1 and tree.children[0].data == "=":
+            x, e = tree.children[0].children
+            tree.data = "="
+            tree.children = [x, Node("gamma")]
+            tree.children[1].children = [Node("<Y*>"), Node("lambda")]
+            tree.children[1].children[1].children = [x, e]
+
+    def _transform_op(self, tree):
+        """
+        Transform binary operator.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        if len(tree.children) == 2:
+            op_ = tree.data
+            e1 = tree.children[0]
+            e2 = tree.children[1]
+            tree.data = "gamma"
+            tree.children = [Node("gamma"), e2]
+            tree.children[0].children = [Node(op_), e1]
+
+    def _transform_at(self, tree):
+        """
+        Transform at expression.
+
+        Args:
+        -  tree (Node): The tree to be transformed.
+        """
+        if len(tree.children) == 3:
+            e1 = tree.children[0]
+            n = tree.children[1]
+            e2 = tree.children[2]
+            tree.data = "gamma"
+            tree.children = [Node("gamma"), e2]
+            tree.children[0].children = [n, e1]
+
+    #############################################################################################################
+    # Getters 
+    #############################################################################################################
+    def get_standard_tree(self):
+        """
+        Get the transformed standard tree.
+
+        Returns:
+            Node: The transformed standard tree.
+        """
+        return self.standard_tree

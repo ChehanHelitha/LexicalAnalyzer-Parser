@@ -1,31 +1,19 @@
-from .node import Node # Use relative import within the package
+#Description
+# This module contains a function to print the tree with appropriate indentation.
 
-def print_tree(node, depth=0):
-    """Recursively prints the AST or ST in the specified dot-indented format."""
-    if not isinstance(node, Node):
-        print(f"{'.' * depth}<INVALID NODE: {type(node)} {node!r}>")
-        return
+#Usage
+# This module provides the print_tree() function to print the AST with appropriate indentation.
 
-    indent = '.' * depth
-    node_type = node.type
-
-    # Handle leaf nodes with values
-    if node_type in ['ID', 'INT', 'STR']:
-        # Format value appropriately
-        if node_type == 'STR':
-            # Escape special characters for printing if needed, or just show raw
-            val_str = node.value # repr(node.value)[1:-1] # Raw string value
-        else:
-            val_str = str(node.value)
-        print(f"{indent}<{node_type}:{val_str}>")
-    # Handle simple leaf nodes without explicit values in the grammar output
-    elif node_type in ['true', 'false', 'nil', 'dummy', '()']:
-         print(f"{indent}<{node_type}>")
-    # Handle internal nodes
-    else:
-        print(f"{indent}{node_type}")
-        for child in node.children:
-            if child: # Ensure child is not None
-                print_tree(child, depth + 1)
-            else:
-                 print(f"{indent}.<ERROR: None child in {node_type}>")
+from utils.tree_list import list_tree
+def print_tree(tree):
+    """
+    Prints the Tree with appropriate indentation.
+    
+    Args:
+        tree: The root node of the AST.
+    """
+    # Generate a list representation of the Tree using a depth-first traversal
+    ls = list_tree(tree)
+    
+    # Print each node of the tree with indentation to represent the tree structure
+    print("\n".join(ls))
