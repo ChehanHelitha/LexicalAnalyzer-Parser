@@ -1,0 +1,6 @@
+let 
+    is_palindrome n = n eq reverse_num(n, 0) -> Print('Palindrome') | Print('Not a Palindrome')
+where 
+    rec reverse_num (n, x) = n gr 0 -> reverse_num (n/10, (x*10 + (n-(n/10)*10))) | x
+in
+    is_palindrome(1321)

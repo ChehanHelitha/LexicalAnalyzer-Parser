@@ -1,0 +1,4 @@
+let 
+    rec Sum n = n eq 1 -> 1 | n + Sum (n-1)
+in 
+    Print (Sum 9)
