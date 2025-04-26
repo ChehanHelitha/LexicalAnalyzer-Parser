@@ -1,10 +1,11 @@
-#src/utils/stack.py
+# src/utils/stack.py
 
-#Description
-#This module consists class stack (data structure) and it's methods.
+# Description
+# This module consists class stack (data structure) and it's methods.
 
-#Usage
+# Usage
 # Create a new stack using the Stack class and perform push, pop, peek, and size operations on the stack.
+
 
 class Stack:
     """
@@ -25,7 +26,7 @@ class Stack:
         """
         Return whether the stack is empty.
         """
-        return self.items ==[]
+        return self.items == []
 
     def push(self, item):
         """
@@ -50,7 +51,7 @@ class Stack:
         Return the number of items in the stack.
         """
         return len(self.items)
-    
+
     def whole_stack(self):
         """
         Return the whole stack.

@@ -1,6 +1,6 @@
 class AcceptStates:
 
-    def _init_(self):
+    def __init__(self):
 
         self.acceptStates ={
             1:'ID',

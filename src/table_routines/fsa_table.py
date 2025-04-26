@@ -1,5 +1,5 @@
 class FSATable:
-    def _init_(self):
+    def __init__(self):
           self.fsaTable = [
             [ 1,  1,  2, -1,  3, 11, -1,  5,  6,  7,  8,  4,  4,  4,  3],
             [ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],

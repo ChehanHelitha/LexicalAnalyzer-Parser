@@ -1,12 +1,12 @@
 def list_tree(tree):
-    ast=[]
+    ast = []
 
-    def dfs(root,depth):
-        ast.append("."*depth+root.data+" ")
+    def dfs(root, depth):
+        ast.append("." * depth + root.data + " ")
 
         for child in root.children:
-            dfs(child,depth+1)
+            dfs(child, depth + 1)
 
-    dfs(tree,0)
+    dfs(tree, 0)
 
     return ast
