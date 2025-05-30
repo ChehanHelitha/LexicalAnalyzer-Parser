@@ -1,9 +1,9 @@
 let 
     fib_range (a, b) = b ls a -> 'wrong range' | 
-		       a le 1 ->(fib_cal (a, b, 1, 0), print(' '), print(1), print(' '), print(0)) |
+		       a le 1 ->(fib_cal (a, b, 1, 0), Print(' '), Print(1), Print(' '), Print(0)) |
 			         fib_cal (a, b, 1, 0)
 where rec fib_cal (a, b, x, y) = (x+y) ls a  -> fib_cal (a, b, x + y, x) |
-				 (x+y) ls b -> ((fib_cal (a, b, x + y, x)), print(' '), print(x+y)) | 
+				 (x+y) ls b -> ((fib_cal (a, b, x + y, x)), Print(' '), Print(x+y)) | 
 						nil			
 in
     fib_range (0, 50)

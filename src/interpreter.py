@@ -16,9 +16,9 @@ from scanner import Scanner
 from screener import Screener
 from parser import Parser
 from build_standard_tree import StandardTree
-#from src.cse_machine.machine import CSEMachine
+from cse_machine.machine import CSEMachine
 
-#from src.cse_machine.data_structures.enviroment import Environment
+from cse_machine.environment import Environment
 import utils.token_printer as Token_printer
 import utils.tree_list as Tree_list
 import utils.tree_printer as Tree_printer
@@ -45,7 +45,7 @@ class Evaluator:
         self.screener = Screener()  # Initialize the screener object
         self.parser = Parser()  # Initialize the parser object
         self.standard_tree = StandardTree()  # Initialize the standard tree builder object
-        #self.cse_machine = CSEMachine()  # Initialize the CSE machine object
+        self.cse_machine = CSEMachine()  # Initialize the CSE machine object
 
         self.str_content = None  # Initialize the string content
         self.tokens = list()  # Initialize a list to store tokens
@@ -88,7 +88,7 @@ class Evaluator:
             self.output = self.cse_machine._generate_output()
 
             # Reset the environment index
-            #Environment().reset_index()
+            Environment().reset_index()
             
 
         except FileNotFoundError:

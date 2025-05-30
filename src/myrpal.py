@@ -16,23 +16,23 @@
 # -rast: Execute the original RPAL interpreter on the given RPAL program file and print the AST. (file should be in rpal_tests/rpal_source)
 # -ct : Print the cse table for the given RPAL program.
 # -l : Print the source code for the given RPAL program.
-# -noout: Default behavior, evaluate the program and print the output.
+# -n: Default behavior, evaluate the program and print the output.
 
 # Examples:
 # To interpret an RPAL program:
-# python main.py file_name
+# python myrpal.py file_name
 
 # Optional Switches Examples:
-# -t: python main.py -t file_name
-# -ft: python main.py -ft file_name
-# -ast: python main.py -ast file_name
-# -st: python main.py -st file_name
-# -r: python main.py -r file_name
-# -rast: python main.py -rast file_name
-# -rst: python main.py -rst file_name
-# -ct: python main.py -ct file_name
-# -l: python main.py -l file_name
-# -noout: python main.py -noout file_name
+# -t: python myrpal.py -t file_name
+# -ft: python myrpal.py -ft file_name
+# -ast: python myrpal.py -ast file_name
+# -st: python myrpal.py -st file_name
+# -r: python myrpal.py -r file_name
+# -rast: python myrpal.py -rast file_name
+# -rst: python myrpal.py -rst file_name
+# -ct: python myrpal.py -ct file_name
+# -l: python myrpal.py -l file_name
+# -n: python myrpal.py -n file_name
 
 import sys
 import platform
@@ -78,11 +78,11 @@ def main():
     if len(sys.argv) >= 4:
         if sys.argv[1] == "-ast" and sys.argv[2] == "-st":
             handle_ast_option(evaluator)
-            handle_standard_tree_option(evaluator)
+            handle_st_option(evaluator)
             handle_default_behavior(evaluator)
         elif sys.argv[1] == "-st" and sys.argv[2] == "-ast":
             handle_ast_option(evaluator)
-            handle_standard_tree_option(evaluator)
+            handle_st_option(evaluator)
             handle_default_behavior(evaluator)
     elif len(sys.argv) >= 3:
         if sys.argv[1] == "-ast":
@@ -96,27 +96,27 @@ def main():
             handle_filtered_tokens_option(evaluator)
         elif sys.argv[1] == "-st":
             # Print the standard tree
-            handle_standard_tree_option(evaluator)
+            handle_st_option(evaluator)
 
         elif sys.argv[1] == "-r":
-            # Print the original RPAL evaluation(file should be in rpal_test/rpal_source file)
+            # Print the original RPAL evaluation
             try:
                 handle_original_rpal_eval(file_name)
             except:
-                print("Error in original RPAL evaluation\n(file should be in rpal_test/rpal_source file)")
+                print("Error in original RPAL evaluation\n(file should be in rpal_source folder)")
         elif sys.argv[1] == "-rast":
-            # Print the original RPAL evaluation(file should be in rpal_test/rpal_source file)
+            # Print the original RPAL evaluation and AST
             try:
                 handle_original_rpal_ast(file_name)
             except:
                 print(
-                    "Error in original RPAL evaluation\n(file should be in rpal_test/rpal_source file)")
+                    "Error in original RPAL evaluation\n(file should be in rpal_source file)")
         elif sys.argv[1] == "-rst":
-            # Print the original RPAL evaluation(file should be in rpal_test/rpal_source file)
+            # Print the original RPAL evaluation and ST
             try:
                 handle_original_rpal_st(file_name)
             except:
-                print("Error in original RPAL evaluation\n(file should be in rpal_test/rpal_source file)")
+                print("Error in original RPAL evaluation\n(file should be in rpal_source file)")
         elif sys.argv[1] == "-ct":
             # Print the CSE table
             try:
@@ -126,7 +126,7 @@ def main():
         elif sys.argv[1] == "-l":
             # Print the lexical analysis
             handle_get_source_code(evaluator)
-        elif sys.argv[1] == "-noout":
+        elif sys.argv[1] == "-n":
             handle_default_behavior(evaluator)
 
     else:
@@ -152,7 +152,7 @@ def handle_ast_option(evaluator):
     evaluator.print_AST()
 
 
-def handle_standard_tree_option(evaluator):
+def handle_st_option(evaluator):
     """
     Prints the Standard Tree for the given file.
 
