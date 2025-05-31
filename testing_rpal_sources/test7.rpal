@@ -1,0 +1,6 @@
+let
+    rec palindromes(x, y) = y ls x -> '' | x eq reverse_num (x, 0) -> (palindromes(x+1, y), Print(' '), Print x) | palindromes(x+1, y)
+where
+    rec reverse_num (n, x) = n gr 0 -> reverse_num (n/10, (x*10 + (n-(n/10)*10))) | x
+in
+    palindromes(0, 100)

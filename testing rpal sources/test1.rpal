@@ -1,7 +1,0 @@
-let findMax a b c=
-    (Isinteger a) & (Isinteger b) & (Isinteger c) ->
-        a > b ->
-           a > c-> a|c
-        | b > c->b|c
-    |'Error'
-in Print(findMax 4 (-3) 2)

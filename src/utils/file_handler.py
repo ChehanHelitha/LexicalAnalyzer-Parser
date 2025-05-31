@@ -1,22 +1,10 @@
-#src/utils/File_handler.py
-
-#Description
+#Description:
 #This module contains utility functions for reading file content.
 
 #Usage:
-#The get_file_content function needs the content of a specified file and returns it as a string.
+#The read_file_content() function reads the content of a specified file and returns it as a string.
 
-
-def get_file_content(file_name):
-    """
-    Read the content of the specified file.
-
-    Args:
-        file_name (str): The name of the file to read.
-
-    Returns:
-        str: The content of the file.
-    """
+def read_file_content(file_name):
     try:
         # Attempt to open the file in read mode and read its content
 
@@ -35,4 +23,3 @@ def get_file_content(file_name):
 
         print(f"Error: An error occurred while reading the file '{file_name}': {e}")
         return None   # Return None to indicate an error occurred
-
