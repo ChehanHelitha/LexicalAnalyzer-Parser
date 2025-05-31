@@ -16,9 +16,9 @@ from scanner import Scanner
 from screener import Screener
 from parser import Parser
 from build_standard_tree import StandardTree
-from CSE_machine.machine import CSEMachine
+from cse_machine.machine import CSEMachine
 
-from CSE_machine.Environment import Environment
+from cse_machine.environment import Environment
 import utils.token_printer as Token_printer
 import utils.tree_list as Tree_list
 import utils.tree_printer as Tree_printer

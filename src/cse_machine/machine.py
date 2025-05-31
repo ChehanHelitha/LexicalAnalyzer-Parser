@@ -24,13 +24,13 @@ Example Usage:
 """
 
 
-from CSE_machine.error_handler import CseErrorHandler
-from CSE_machine.Environment import Environment
-from CSE_machine.stack import Stack
-from CSE_machine.stlinearizer import Linearizer
-from CSE_machine.utils import add_table_data, print_cse_table , var_lookup , raw , add_table_data_decorator 
-from CSE_machine.binop import apply_binary_operations
-from CSE_machine.unop import apply_unary_operations
+from cse_machine.error_handler import CseErrorHandler
+from cse_machine.environment import Environment
+from cse_machine.stack import Stack
+from cse_machine.stlinearizer import Linearizer
+from cse_machine.utils import add_table_data, print_cse_table , var_lookup , raw , add_table_data_decorator 
+from cse_machine.binop import apply_binary_operations
+from cse_machine.unop import apply_unary_operations
 from utils.control_structure_element import ControlStructureElement
 
 class CSEMachine:

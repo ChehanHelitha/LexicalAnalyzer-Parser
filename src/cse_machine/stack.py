@@ -6,7 +6,7 @@ This module can be imported and used to create a custom stack class for the CSE 
 """
 
 from utils.stack import Stack
-from CSE_machine.Environment import Environment
+from cse_machine.environment import Environment
 
 class STACK(Stack):
     """
