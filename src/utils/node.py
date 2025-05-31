@@ -52,5 +52,5 @@ class Node:
         """
         # String representation of the node, showing its data and the data of its children
         # print(self.children)
-        children_data = ", ".join(str(child.data) for child in self.children)
+        children_data = ", ".join(str(child.data) for child in self.childern)
         return f"Node(data={self.data}, children=[{children_data}])"

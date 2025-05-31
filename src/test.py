@@ -6,12 +6,8 @@ from src.Parser.parser_module import (
 )  # Assuming the parser class is in parser_module.py
 
 # Example code to parse
-input_code = """
-let  
-    x = -15
-in  
-    Print(x > 0 -> 'Positive' | x < 0 -> 'Negative' | 'Zero')
-"""
+input_code = "let x = 5 in x"
+
 
 # Initialize the Scanner and Screener
 scanner = Scanner()
@@ -35,3 +31,9 @@ if parser.status:
     print("AST: ", ast)  # Print the AST structure
 else:
     print("Parsing failed.")
+    
+scanner = Scanner()
+input_code = "let x = 5 in x"
+tokens = scanner.token_scan(input_code)
+for token in tokens:
+    print(f"<{token.type}: {token.value}>")

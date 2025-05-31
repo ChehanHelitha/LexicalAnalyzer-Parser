@@ -4,20 +4,9 @@
 # This module contains the Token class, which represents a token in a program.
 
 #Usage:
-# This module provides the Token class, which can be used to represent tokens in a program.
+# This module provides the Token class, which can be used to represent tokens in a program.   
 class Token :
-    class Token:
-        """
-        A class representing a token in a program.
-
-        A token is an element of a program that has a specific meaning and can be interpreted by a computer.
-        A token typically consists of a type and a value, where the type defines the meaning of the token and the value provides additional information about the token.
-
-        Attributes:
-            type (str): The type of the token.
-            value (str): The value of the token.
-
-        """
+  
 
     def __init__(self, value: str, type_: str):
         """

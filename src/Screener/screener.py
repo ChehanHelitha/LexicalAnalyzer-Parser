@@ -15,8 +15,8 @@ class Screener:
             if token.get_type() == "DELETE":
                 continue
 
-            elif token.get_type() == "ID" and token.get_val() in self.keywords:
-                filtered_tokens.append(Token(token.get_val(), "KEYWORD"))
+            elif token.get_type() == "ID" and token.get_value() in self.keywords:
+                filtered_tokens.append(Token(token.get_value(), "KEYWORD"))
 
             else:
                 filtered_tokens.append(token)
