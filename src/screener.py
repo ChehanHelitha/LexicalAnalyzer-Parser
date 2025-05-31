@@ -1,4 +1,4 @@
-from table_routines.keywords import Keywords
+from Table_routines.keywords import Keywords
 from utils.tokens import Token
 
 class Screener:

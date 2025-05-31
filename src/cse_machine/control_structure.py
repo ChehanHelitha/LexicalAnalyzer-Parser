@@ -6,7 +6,7 @@ Usage
 This module contains the ControlStructure class, which represents a control structure in the CSE machine.
 """
 
-from cse_machine.stack import Stack
+from CSE_machine.stack import Stack
 
 class ControlStructure(Stack):
     """

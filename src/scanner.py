@@ -1,6 +1,6 @@
-from table_routines.char_map import CharMap
-from table_routines.fsa_table import FSATable
-from table_routines.accept_states import AcceptStates
+from Table_routines.char_map import CharMap
+from Table_routines.fsa_table import FSATable
+from Table_routines.accept_states import AcceptStates
 from utils.tokens import Token
 
 class Scanner:
