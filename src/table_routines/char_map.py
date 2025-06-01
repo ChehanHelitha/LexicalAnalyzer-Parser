@@ -2,7 +2,8 @@ class CharMap:
     def __init__(self):
         """
         This class groups all possible characters into category indexes (0 to 14), each representing a type of character the scanner understands.
-        """
+
+       """
         self.charMap = {
             # Uppercase letters
             'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'G': 0, 'H': 0, 'I': 0, 'J': 0, 'K': 0, 'L': 0, 'M': 0,
@@ -23,7 +24,7 @@ class CharMap:
 
     def get_category(self, char):
         """        
-        This method returns the category group number associated with a given character.
-        If the character is not found in the mapping, it returns -1.
+           Returns the group number for a character, or -1 if not found.
+
         """
         return self.charMap.get(char, -1)

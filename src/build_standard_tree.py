@@ -1,12 +1,3 @@
-# Description:
-# This module contains the StandardTree class, which is used to build a standard tree from a given AST tree.
-# The standard tree is a transformed version of the input tree based on predefined rules and transformations outlined in the "semantics.pdf" documentation.
-
-# Usage:
-# This module provides the StandardTree class, which can be utilized to transform an input tree into a standard form.
-# The build_standard_tree method applies a series of transformations to the input tree, resulting in a standard tree.
-# Each transformation corresponds to specific cases or patterns found in the input tree's structure.
-
 from utils.node import Node
 from copy import deepcopy
 

@@ -4,6 +4,16 @@
 #Usage:
 #The read_file_content() function reads the content of a specified file and returns it as a string.
 
+"""
+description:
+This module contains utility functions for reading file content.
+# It handles file not found errors and other exceptions that may occur during file reading.
+# Usage:
+from utils.file_handler import read_file_content
+# The read_file_content() function reads the content of a specified file and returns it as a string.
+# It handles file not found errors and other exceptions that may occur during file reading.
+"""
+
 def read_file_content(file_name):
     try:
         # Attempt to open the file in read mode and read its content

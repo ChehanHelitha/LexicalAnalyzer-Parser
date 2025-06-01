@@ -1,4 +1,8 @@
 class Token:
+    """A class representing a token with a type and value.
+    This class provides methods to get and set the type and value of the token,
+    as well as methods for string representation, equality checks, and hashing.
+    """
     def __init__(self, value: str, type_: str):
         self.type = type_
         self.value = value

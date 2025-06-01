@@ -1,11 +1,9 @@
 class Stack:
     """
-    A stack is an abstract data type that serves as a collection of elements, with two main operations:
-    - push, which adds an element to the top of the stack, and
-    - pop, which removes the element at the top of the stack.
-    The order in which elements are added to the stack is known as the stack's "order of entry" or "last-in, first-out" (LIFO).
-    This implementation uses a list as the underlying data structure.
-    """
+    A simple stack implementation using a list in Python.
+    This class provides basic stack operations such as push, pop, peek, and checking if the stack is empty.
+    It also allows checking the size of the stack and retrieving the whole stack as a list.
+    """ 
 
     def __init__(self):
         self.items = []

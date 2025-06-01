@@ -1,10 +1,12 @@
-"""
-Description
-This module defines a control structure class for the CSE (Compiler, Symbolic, Expression) machine.
 
-Usage
-This module contains the ControlStructure class, which represents a control structure in the CSE machine.
 """
+Description: This module defines the ControlStructure class, which represents a control structure in the CSE machine.
+# This module defines a control structure class for the CSE (Compiler, Symbolic, Expression) machine.
+
+Usage: This module can be imported and used to create control structures in the CSE machine.
+
+"""
+
 
 from cse_machine.stack import Stack
 

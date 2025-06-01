@@ -1,4 +1,6 @@
 class ControlStructureElement:
+    """A class representing an element of a control structure in a syntax tree.
+    """
     def __init__(self, type, value, bounded_variable=None,control_structure=None, env=None , operator=None):
         self.type = type
         self.value = value

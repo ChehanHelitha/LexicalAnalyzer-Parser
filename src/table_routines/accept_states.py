@@ -1,9 +1,7 @@
 class AcceptStates:
     """
-    This class defines the accept states for the lexical analyzer(Screener.py).
-    Each accept state corresponds to a specific token type that the analyzer can recognize.
-    The accept states are used to determine if a sequence of characters forms a valid token.
-    The mapping of accept states to token types is defined in the `acceptStates` dictionary.
+      Defines accept states for the lexical analyzer, mapping each to a token type in acceptStates.
+      
     """
     def __init__(self):
         # Initialize the accept states dictionary with mappings of state numbers to token types

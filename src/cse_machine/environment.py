@@ -1,10 +1,4 @@
-"""
-Description
-This module defines an enumeration class for the CSE (Compiler, Symbolic, Expression) machine. 
-The enumeration class is used to represent different types of data and operations within the machine.
-
-Usage
-This module can be imported and used to define and handle enumerations in the CSE machine.
+"""Environment class for managing variable scopes and hierarchies in a CSE machine.
 """
 
 from collections import defaultdict

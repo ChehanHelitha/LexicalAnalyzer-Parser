@@ -1,5 +1,9 @@
 # Set of reserved keywords in RPAL
 class Keywords:
+    """
+    The Keywords class defines a set of reserved keywords in the RPAL language
+    
+    """
     def __init__(self):
         # Define a set containing all the keywords in the RPAL language
         self.keywords = {

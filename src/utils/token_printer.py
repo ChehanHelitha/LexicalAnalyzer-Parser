@@ -1,5 +1,10 @@
 def print_tokens(tokens):
-    """Prints a list of tokens, one per line (for debugging)."""
+    """
+    Print the tokens in a formatted manner.
+    Args:
+        tokens (list): A list of Token objects to be printed.
+        
+    """
     print("--- Tokens ---")
     if not tokens:
         print("(No tokens)")
