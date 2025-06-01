@@ -1,77 +1,109 @@
-# RPAL Interpreter
+RPAL Interpreter
+This project is the culmination of the CS3513 - Programming Languages module, offered by the Department of Computer Science & Engineering, University of Moratuwa, completed in the 4th semester of Batch 22. It implements an interpreter for the RPAL (Right-reference Pedagogic Algorithmic Language) programming language, including a lexical analyzer, parser, and CSE machine.
 
-This project is the culmination of the **CS3513 - Programming Languages** module, offered by the Department of Computer Science & Engineering, University of Moratuwa. It was completed in the 4th semester of Batch 22.
+Table of Contents
 
----
-
-## Table of Contents
-
-- [Problem Requirements](#problem-requirements)  
-- [About Our Solution](#about-our-solution)  
-- [Usage](#usage)  
-- [Features](#features)  
-- [Project Structure](#project-structure)  
-- [Modules](#modules)  
-  - [Lexical Analyzer](#lexical-analyzer)  
-  - [Screener](#screener)  
-  - [Parser](#parser)  
-  - [CSE Machine](#cse-machine)  
-- [Contributors](#contributors)  
-- [License](#license)  
-
----
-
-## Problem Requirements
-
-Implement a lexical analyzer and parser for the RPAL (Right-reference Pedagogic Algorithmic Language). The lexical rules are specified in `RPAL_Lex`, and grammar details are in `RPAL_Grammar`. Refer to the "About RPAL" documentation for language information.
-
-The parser output must be the **Abstract Syntax Tree (AST)** for the input program. Additionally, implement an algorithm to convert the AST into a **Standardized Tree (ST)**, and implement the **CSE machine** as per the provided semantics document, which defines the rules for AST to ST transformation.
-
-The program should read an input RPAL program file and produce output matching that of the reference `rpal.exe`.
-
----
-
-## About Our Solution
-
-- **Programming Language:** Python  
-- **Development & Testing Tools:** Visual Studio Code, Command Line, Cygwin, Pytest, GitHub Actions, Makefile  
-
----
-
-## Usage
-
-### Prerequisites
-
-- Python (preferably 3.7 or above) and pip installed on your system.
-
-### Setup
-
-1. Clone the repository or download the source code ZIP.  
-2. Navigate to the project root directory.  
-3. Install the required Python dependencies:
-
-```bash
-pip install -r requirements.txt
+Problem Requirements
+About Our Solution
+Usage
+Features
+Project Structure
+Modules
+Lexical Analyzer
+Screener
+Parser
+CSE Machine
 
 
-## Running the Interpreter
+Contributors
+License
 
-The project files are primarily executed from the `src` directory. To run the interpreter and other features, navigate to the `src` folder and run commands as follows:
 
-```bash
+Problem Requirements
+The project requires implementing a lexical analyzer and parser for the RPAL language, adhering to the lexical rules in RPAL_Lex and grammar in RPAL_Grammar. The interpreter must:
+
+Generate an Abstract Syntax Tree (AST) from an input RPAL program.
+Convert the AST into a Standardized Tree (ST).
+Implement the CSE Machine to evaluate the ST based on the provided semantics (13 CSE rules).
+Produce output matching the reference rpal.exe for any valid RPAL program.
+
+Refer to the "About RPAL" documentation for detailed language specifications.
+
+About Our Solution
+
+Programming Language: Python (3.7 or higher)
+Development & Testing Tools:
+Visual Studio Code
+Command Line (Cygwin for Windows compatibility)
+Pytest for unit testing
+GitHub Actions for CI/CD
+Makefile for build automation
+
+
+
+The solution is modular, with distinct components for lexical analysis, token screening, parsing, and program execution, ensuring maintainability and scalability.
+
+Usage
+Prerequisites
+
+Python 3.7 or higher
+pip (Python package manager)
+
+Setup
+
+Clone the repository or download the source code:git clone https://github.com/your-username/rpal-interpreter.git
+
+
+Navigate to the project root directory:cd rpal-interpreter
+
+
+Install the required Python dependencies:pip install -r requirements.txt
+
+
+
+Running the Interpreter
+The interpreter is executed from the src directory. Use the following command to run the interpreter or access specific outputs:
 cd src
-python myrpal.py [switch] ../testing_rpal_sources/file_name.rpal
+python myrpal.py [switch] ../testing_rpal_sources/<file_name>.rpal
 
-### Available Command-Line Switches
+Available Command-Line Switches
 
-| Switch       | Description                               | Example Usage                                           |
-|--------------|-------------------------------------------|---------------------------------------------------------|
-| *(no switch)*| Run the interpreter on the RPAL source    | `python myrpal.py ../testing_rpal_sources/file_name.rpal` |
-| `-ast`       | Generate the Abstract Syntax Tree (AST)   | `python myrpal.py -ast ../testing_rpal_sources/file_name.rpal` |
-| `-st`        | Generate the Standardized Tree (ST)        | `python myrpal.py -st ../testing_rpal_sources/file_name.rpal`  |
-| `-ct`        | Generate the CSE Machine table              | `python myrpal.py -ct ../testing_rpal_sources/file_name.rpal`  |
-| `-t`         | Generate the token list from the lexer     | `python myrpal.py -t ../testing_rpal_sources/file_name.rpal`   |
-| `-ft`        | Generate the filtered token list from screener | `python myrpal.py -ft ../testing_rpal_sources/file_name.rpal` |
+
+
+Switch
+Description
+Example Usage
+
+
+
+(no switch)
+Run the interpreter and produce program output
+python myrpal.py ../testing_rpal_sources/example.rpal
+
+
+-ast
+Generate and display the Abstract Syntax Tree
+python myrpal.py -ast ../testing_rpal_sources/example.rpal
+
+
+-st
+Generate and display the Standardized Tree
+python myrpal.py -st ../testing_rpal_sources/example.rpal
+
+
+-ct
+Generate and display the CSE Machine table
+python myrpal.py -ct ../testing_rpal_sources/example.rpal
+
+
+-t
+Generate and display the token list
+python myrpal.py -t ../testing_rpal_sources/example.rpal
+
+
+-ft
+Generate and display the filtered token list
+python myrpal.py -ft ../testing_rpal_sources/example.rpal
 
 
 
