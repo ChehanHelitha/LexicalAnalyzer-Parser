@@ -36,7 +36,7 @@
 
 import sys
 import platform
-from interpreter import Evaluator
+from interpreter.interpreter import Evaluator
 #from rpal_tests.rpal_exe import rpal_exe
 
 def main():

@@ -116,24 +116,70 @@ RPAL Source → Lexer → Parser → Standardizer → CSE Machine → Output
 ## 📁 Project Structure
 
 ```
-rpal-interpreter/
-├── 📁 src/                          # Main source code
-│   ├── 📁 cse_machine/              # CSE machine implementation
-│   │   ├── machine.py               # Core CSE machine logic
-│   │   ├── environment.py           # Environment management
-│   │   ├── stack.py                 # Stack operations
-│   │   └── ...
-│   ├── 📁 table_routines/           # FSA tables and lexical rules
-│   ├── 📁 utils/                    # Shared utilities
-│   ├── myrpal.py                    # Main interpreter entry point
-│   ├── scanner.py                   # Lexical analyzer
-│   ├── screener.py                  # Token filter
-│   └── parser.py                    # Parser implementation
-├── 📁 testing_rpal_sources/         # Test RPAL programs
-├── 📁 docs/                         # Documentation
-├── requirements.txt                 # Python dependencies
-└── README.md                        # This file
+LEXIC...
+├── 📁 docs/
+├── 📁 src/
+│   ├── 📁 __pycache__/
+│   ├── 📁 cse_machine/
+│   │   ├── 📁 __pycache__/
+│   │   ├── 📜 binop.py
+│   │   ├── 📜 control_structure.py
+│   │   ├── 📜 environment.py
+│   │   ├── 📜 error_handler.py
+│   │   ├── 📜 machine.py
+│   │   ├── 📜 stack.py
+│   │   ├── 📜 stlinearizer.py
+│   │   ├── 📜 unop.py
+│   │   └── 📜 utils.py
+│   ├── 📁 interpreter/
+│   │   ├── 📁 __pycache__/
+│   │   └── 📜 interpreter.py
+│   ├── 📁 lexical_analyzer/
+│   │   ├── 📁 __pycache__/
+│   │   └── 📜 scanner.py
+│   ├── 📁 parser/
+│   │   ├── 📁 __pycache__/
+│   │   └── 📜 parser.py
+│   ├── 📁 rpal_source/
+│   ├── 📁 screener/
+│   │   ├── 📁 __pycache__/
+│   │   └── 📜 screener.py
+│   ├── 📁 standerized_tr.../
+│   │   ├── 📁 __pycache__/
+│   │   └── 📜 build_standar...
+│   ├── 📁 table_routines/
+│   │   ├── 📁 __pycache__/
+│   │   ├── 📜 accept_states.py
+│   │   ├── 📜 char_map.py
+│   │   ├── 📜 fsa_table.py
+│   │   └── 📜 keywords.py
+│   ├── 📁 utils/
+│   │   ├── 📁 __pycache__/
+│   │   ├── 📜 control_structure_e...
+│   │   ├── 📜 file_handler.py
+│   │   ├── 📜 node.py
+│   │   ├── 📜 stack.py
+│   │   ├── 📜 token_printer.py
+│   │   ├── 📜 tokens.py
+│   │   ├── 📜 tree_list.py
+│   │   └── 📜 tree_printer.py
+│   └── 📜 myrpal.py
+├── 📁 testing_rpal_so.../
+│   ├── 📄 test1.rpal
+│   ├── 📄 test2.rpal
+│   ├── 📄 test3.rpal
+│   ├── 📄 test4.rpal
+│   ├── 📄 test5.rpal
+│   ├── 📄 test6.rpal
+│   ├── 📄 test7.rpal
+│   ├── 📄 test8.rpal
+│   ├── 📄 test9.rpal
+│   └── 📄 test10.txt
+├── 📄 .gitignore
+├── 📄 README.md
+└── 📄 requirements.txt
 ```
+
 
 ## 🧪 Testing
 

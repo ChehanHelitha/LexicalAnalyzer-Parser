@@ -12,10 +12,10 @@
 
 # importing the necessary modules
 
-from scanner import Scanner
-from screener import Screener
-from parser import Parser
-from build_standard_tree import StandardTree
+from lexical_analyzer.scanner import Scanner
+from screener.screener import Screener
+from parser.parser import Parser
+from standerized_tree.build_standard_tree import StandardTree
 from cse_machine.machine import CSEMachine
 
 from cse_machine.environment import Environment
