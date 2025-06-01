@@ -1,198 +1,212 @@
-RPAL Interpreter
-This project is the culmination of the CS3513 - Programming Languages module, offered by the Department of Computer Science & Engineering, University of Moratuwa, completed in the 4th semester of Batch 22. It implements an interpreter for the RPAL (Right-reference Pedagogic Algorithmic Language) programming language, including a lexical analyzer, parser, and CSE machine.
-
-Table of Contents
-
-Problem Requirements
-About Our Solution
-Usage
-Features
-Project Structure
-Modules
-Lexical Analyzer
-Screener
-Parser
-CSE Machine
-
-
-Contributors
-License
-
-
-Problem Requirements
-The project requires implementing a lexical analyzer and parser for the RPAL language, adhering to the lexical rules in RPAL_Lex and grammar in RPAL_Grammar. The interpreter must:
-
-Generate an Abstract Syntax Tree (AST) from an input RPAL program.
-Convert the AST into a Standardized Tree (ST).
-Implement the CSE Machine to evaluate the ST based on the provided semantics (13 CSE rules).
-Produce output matching the reference rpal.exe for any valid RPAL program.
-
-Refer to the "About RPAL" documentation for detailed language specifications.
-
-About Our Solution
-
-Programming Language: Python (3.7 or higher)
-Development & Testing Tools:
-Visual Studio Code
-Command Line (Cygwin for Windows compatibility)
-Pytest for unit testing
-GitHub Actions for CI/CD
-Makefile for build automation
+# RPAL Interpreter
 
 
 
-The solution is modular, with distinct components for lexical analysis, token screening, parsing, and program execution, ensuring maintainability and scalability.
+A complete interpreter implementation for **RPAL** (Right-reference Pedagogic Algorithmic Language) built as part of CS3513 - Programming Languages module at the University of Moratuwa.
 
-Usage
-Prerequisites
+## 🎯 Overview
 
-Python 3.7 or higher
-pip (Python package manager)
+This project implements a full-featured RPAL interpreter that processes source code through multiple stages: lexical analysis, parsing, tree standardization, and execution via a CSE (Control-Stack-Environment) machine. The interpreter faithfully follows RPAL language specifications and produces output compatible with the reference implementation.
 
-Setup
+## ✨ Key Features
 
-Clone the repository or download the source code:git clone https://github.com/your-username/rpal-interpreter.git
+- **Complete Lexical Analysis** - Tokenizes RPAL source code following official lexical rules
+- **Robust Parser** - Generates Abstract Syntax Trees (AST) with comprehensive error handling  
+- **Tree Standardization** - Transforms AST into Standardized Trees (ST) for execution
+- **CSE Machine** - Executes programs using the 13 standardized CSE evaluation rules
+- **Multiple Output Modes** - View tokens, trees, and execution states for debugging
+- **Reference Compatibility** - Output matches the official `rpal.exe` implementation
 
+## 📋 Requirements
 
-Navigate to the project root directory:cd rpal-interpreter
+Before running the interpreter, ensure you have:
 
+- **Python 3.7+** installed on your system
+- **pip** package manager
+- **Git** (for cloning the repository)
 
-Install the required Python dependencies:pip install -r requirements.txt
+## 🚀 Quick Start
 
+### Installation
 
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd rpal-interpreter
+   ```
 
-Running the Interpreter
-The interpreter is executed from the src directory. Use the following command to run the interpreter or access specific outputs:
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Basic Usage
+
+Navigate to the source directory and run:
+
+```bash
 cd src
-python myrpal.py [switch] ../testing_rpal_sources/<file_name>.rpal
+python myrpal.py ../testing_rpal_sources/sample.rpal
+```
 
-Available Command-Line Switches
+## 📖 Usage Guide
 
+### Command Line Interface
 
+The interpreter supports various command-line switches for different output modes:
 
-Switch
-Description
-Example Usage
+```bash
+python myrpal.py [OPTION] <rpal-file>
+```
 
+#### Available Options
 
+| Option | Description | Output |
+|--------|-------------|---------|
+| *(none)* | **Execute program** | Program execution results |
+| `-ast` | **Show AST** | Abstract Syntax Tree visualization |
+| `-st` | **Show ST** | Standardized Tree structure |
+| `-ct` | **Show CSE Table** | CSE machine control structures |
+| `-t` | **Show Tokens** | Raw lexical tokens |
+| `-ft` | **Show Filtered Tokens** | Processed tokens after screening |
 
-(no switch)
-Run the interpreter and produce program output
-python myrpal.py ../testing_rpal_sources/example.rpal
+#### Example Commands
 
+```bash
+# Execute a program
+python myrpal.py ../testing_rpal_sources/fibonacci.rpal
 
--ast
-Generate and display the Abstract Syntax Tree
-python myrpal.py -ast ../testing_rpal_sources/example.rpal
+# View the Abstract Syntax Tree
+python myrpal.py -ast ../testing_rpal_sources/factorial.rpal
 
+# Debug with token analysis
+python myrpal.py -t ../testing_rpal_sources/simple.rpal
+```
 
--st
-Generate and display the Standardized Tree
-python myrpal.py -st ../testing_rpal_sources/example.rpal
+## 🏗️ Architecture
 
+The interpreter follows a modular design with four main processing stages:
 
--ct
-Generate and display the CSE Machine table
-python myrpal.py -ct ../testing_rpal_sources/example.rpal
+```
+RPAL Source → Lexer → Parser → Standardizer → CSE Machine → Output
+```
 
+### Core Components
 
--t
-Generate and display the token list
-python myrpal.py -t ../testing_rpal_sources/example.rpal
+#### 🔍 **Lexical Analyzer** (`scanner.py`)
+- Converts source code into tokens using finite state automata
+- Handles all RPAL lexical elements (identifiers, operators, literals, etc.)
+- Implements comprehensive error detection for invalid characters
 
+#### 🧹 **Screener** (`screener.py`) 
+- Filters token stream to remove whitespace and comments
+- Prepares clean token sequence for parsing
+- Maintains position information for error reporting
 
--ft
-Generate and display the filtered token list
-python myrpal.py -ft ../testing_rpal_sources/example.rpal
+#### 🌳 **Parser** (`parser.py`)
+- Constructs Abstract Syntax Tree from token stream
+- Implements RPAL grammar rules with recursive descent parsing
+- Transforms AST into Standardized Tree for execution
 
+#### ⚙️ **CSE Machine** (`cse_machine/`)
+- Executes standardized trees using stack-based evaluation
+- Implements all 13 CSE machine rules
+- Manages environments for variable scoping and function calls
 
+## 📁 Project Structure
 
-Features
-
-Lexical Analysis: Tokenizes RPAL source code based on RPAL_Lex rules.
-Token Screening: Filters tokens to remove whitespace and comments, preparing them for parsing.
-Parsing: Constructs the Abstract Syntax Tree (AST) and Standardized Tree (ST).
-CSE Machine: Executes the RPAL program by traversing the ST and applying the 13 CSE evaluation rules.
-Debugging Outputs: Provides options to view tokens, filtered tokens, AST, ST, and CSE machine table.
-Error Handling: Robust handling of invalid inputs and syntax errors.
-
-
-Project Structure
-The project is organized into modular components, each handling a specific part of the interpretation process:
+```
 rpal-interpreter/
-├── docs/                  # Documentation files
-├── src/                   # Source code for the interpreter
-│   ├── __pycache__/       # Python bytecode cache
-│   ├── cse_machine/       # CSE machine implementation
-│   │   ├── __pycache__/
-│   │   ├── binop.py
-│   │   ├── control_struct.py
-│   │   ├── environment.py
-│   │   ├── error_handler.py
-│   │   ├── machine.py
-│   │   ├── stack.py
-│   │   ├── stlinearizer.py
-│   │   ├── unop.py
-│   │   └── utils.py
-│   ├── rpal_source/       # RPAL source-related files
-│   │   ├── cygwin1.dll    # Cygwin DLL for Windows compatibility
-│   │   └── rpal.exe       # Reference RPAL executable
-│   ├── table_routines/    # Table and state machine routines
-│   │   ├── __pycache__/
-│   │   ├── accept_states.py
-│   │   ├── char_map.py
-│   │   ├── fsa_table.py
-│   │   ├── keywords.py
-│   │   └── utils/         # Utility functions for table routines
-│   │       ├── __pycache__/
-│   │       ├── control_struct.py
-│   │       ├── file_handler.py
-│   │       ├── node.py
-│   │       ├── stack.py
-│   │       ├── token_printer.py
-│   │       ├── tokens.py
-│   │       ├── tree_list.py
-│   │       ├── tree_printer.py
-│   │       ├── build_standard.py
-│   │       └── interpreter.py
-│   ├── utils/             # General utility scripts
-│   │   ├── __pycache__/
-│   │   ├── control_struct.py
-│   │   ├── file_handler.py
-│   │   ├── node.py
-│   │   ├── stack.py
-│   │   ├── token_printer.py
-│   │   ├── tokens.py
-│   │   ├── tree_list.py
-│   │   ├── tree_printer.py
-│   │   ├── build_standard.py
-│   │   ├── interpreter.py
-│   │   ├── myrpal.py
-│   │   ├── parser.py
-│   │   ├── scanner.py
-│   │   └── screener.py
-├── testing_rpal_sources/  # Sample RPAL test files
-├── .gitignore             # Git ignore file
-├── README.md              # Project documentation
-└── requirements.txt       # Python dependencies
+├── 📁 src/                          # Main source code
+│   ├── 📁 cse_machine/              # CSE machine implementation
+│   │   ├── machine.py               # Core CSE machine logic
+│   │   ├── environment.py           # Environment management
+│   │   ├── stack.py                 # Stack operations
+│   │   └── ...
+│   ├── 📁 table_routines/           # FSA tables and lexical rules
+│   ├── 📁 utils/                    # Shared utilities
+│   ├── myrpal.py                    # Main interpreter entry point
+│   ├── scanner.py                   # Lexical analyzer
+│   ├── screener.py                  # Token filter
+│   └── parser.py                    # Parser implementation
+├── 📁 testing_rpal_sources/         # Test RPAL programs
+├── 📁 docs/                         # Documentation
+├── requirements.txt                 # Python dependencies
+└── README.md                        # This file
+```
 
+## 🧪 Testing
 
-Modules
-Lexical Analyzer
-Purpose: Scans the RPAL source file and generates a token list based on RPAL_Lex rules.Input: RPAL source fileOutput: List of token objects (type, value attributes)Details: Implemented in scanner.py, utilizing finite state automata from table_routines.
-Screener
-Purpose: Filters the token list to prepare it for parsing.Input: Token list from the Lexical AnalyzerOutput: Filtered token listDetails: Implemented in screener.py, removing unnecessary tokens like whitespace and comments.
-Parser
-Purpose: Constructs the Abstract Syntax Tree (AST) and Standardized Tree (ST).Input: Filtered token list from the ScreenerOutput: Standardized Tree (ST)Details: Implemented in parser.py, with tree-building logic in build_standard.py.
-CSE Machine
-Purpose: Evaluates the RPAL program by traversing the ST and applying the 13 CSE rules.Input: Standardized Tree (ST)Output: Program outputDetails: Implemented in cse_machine/machine.py, with supporting logic in stlinearizer.py and environment.py.
+The project includes comprehensive test cases in the `testing_rpal_sources/` directory:
 
-Contributors
+```bash
+# Run basic tests
+python myrpal.py ../testing_rpal_sources/basic_ops.rpal
 
-[Your Name] (GitHub: [your-username])
-[Contributor Name] (GitHub: [contributor-username], if applicable)
+# Test complex programs
+python myrpal.py ../testing_rpal_sources/recursive_functions.rpal
 
-Contributions are welcome! Please submit a pull request or open an issue for suggestions or bug reports.
+# Validate against reference implementation
+python myrpal.py ../testing_rpal_sources/complex.rpal > output.txt
+```
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+## 🛠️ Development
+
+### Code Organization
+
+- **Modular Design**: Each component is self-contained with clear interfaces
+- **Error Handling**: Comprehensive error detection and reporting throughout
+- **Documentation**: Well-documented code with clear function signatures
+- **Testing**: Extensive test coverage with sample RPAL programs
+
+### Key Algorithms
+
+1. **Lexical Analysis**: Finite State Automaton for tokenization
+2. **Parsing**: Recursive Descent Parser with predictive parsing
+3. **Tree Building**: AST construction with proper node relationships  
+4. **Standardization**: Rule-based AST to ST transformation
+5. **Execution**: Stack-based evaluation with environment management
+
+## 📚 Language Support
+
+The interpreter supports the complete RPAL language specification including:
+
+- **Data Types**: Integers, strings, booleans, tuples, functions
+- **Operators**: Arithmetic, logical, comparison, and string operations
+- **Control Flow**: Conditional expressions, recursion
+- **Functions**: Lambda expressions, function application, currying
+- **Pattern Matching**: Tuple destructuring and parameter binding
+
+## 🤝 Contributing
+
+This project was developed as part of academic coursework. If you'd like to contribute:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/improvement`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature/improvement`)
+5. Create a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🎓 Academic Context
+
+**Course**: CS3513 - Programming Languages  
+**Institution**: Department of Computer Science & Engineering, University of Moratuwa  
+**Semester**: 4th Semester, Batch 22
+
+This implementation demonstrates practical application of compiler design principles including lexical analysis, syntax analysis, semantic analysis, and code execution.
+
+## 📞 Support
+
+For questions or issues:
+
+- 📧 Create an issue in the repository
+- 📖 Refer to the RPAL language documentation in the `docs/` folder
+- 🔍 Check existing test cases for usage examples
+
+---
+
+*Built with ❤️ for the Programming Languages community*
