@@ -88,15 +88,19 @@ def main():
         if sys.argv[1] == "-ast":
             # Print the Abstract Syntax Tree
             handle_ast_option(evaluator)
+            handle_default_behavior(evaluator)
         elif sys.argv[1] == "-t":
             # Print the tokens
             handle_tokens_option(evaluator)
+            handle_default_behavior(evaluator)
         elif sys.argv[1] == "-ft":
             # Print the filtered tokens
             handle_filtered_tokens_option(evaluator)
+            handle_default_behavior(evaluator)
         elif sys.argv[1] == "-st":
             # Print the standard tree
             handle_st_option(evaluator)
+            handle_default_behavior(evaluator)
 
         elif sys.argv[1] == "-r":
             # Print the original RPAL evaluation
@@ -121,11 +125,13 @@ def main():
             # Print the CSE table
             try:
                 handle_cse_table_option(evaluator)
+                handle_default_behavior(evaluator)
             except:
                 print("Error in printing CSE table")
         elif sys.argv[1] == "-l":
             # Print the lexical analysis
             handle_get_source_code(evaluator)
+            handle_default_behavior(evaluator)
         elif sys.argv[1] == "-n":
             handle_default_behavior(evaluator)
 
