@@ -36,8 +36,10 @@
 
 import sys
 import platform
+import subprocess # Import the subprocess module
+import os         # Import os for path manipulation
+
 from interpreter.interpreter import Evaluator
-#from rpal_tests.rpal_exe import rpal_exe
 
 def main():
     """
@@ -218,52 +220,100 @@ def handle_filtered_tokens_option(evaluator):
     evaluator.print_filtered_tokens()
 
 
-def handle_original_rpal_eval(file_name):
+def get_rpal_exe_path():
+    """
+    Determines the path to rpal.exe.
+    Adjust this function based on where rpal.exe is located.
+    """
+    # Example: Assume rpal.exe is in a directory 'rpal_executables'
+    # one level up from the 'src' directory where myrpal.py might be.
+    script_dir = os.path.dirname(os.path.abspath(__file__)) # Directory of myrpal.py (src)
+    project_root = os.path.dirname(script_dir)             # One level up (your_project_directory)
+    exe_path = os.path.join(project_root, "rpal_executables", "rpal.exe")
+
+    # Alternative: if rpal.exe is directly in the system PATH:
+    # exe_path = "rpal.exe" # The OS will search for it
+
+    if not os.path.exists(exe_path):
+        # Fallback if not found, perhaps it's in the current working directory or src
+        local_exe_path = os.path.join(script_dir, "rpal.exe")
+        if os.path.exists(local_exe_path):
+            return local_exe_path
+        # Add more search logic if needed or raise an error
+        print(f"Error: rpal.exe not found at expected location: {exe_path}", file=sys.stderr)
+        return None
+    return exe_path
+
+def run_external_rpal(rpal_file_path, options=None):
+    """
+    Runs the external rpal.exe with the given file and options.
+    The rpal_file_path should be the path to the .rpal test file.
+    """
+    rpal_exe_location = get_rpal_exe_path()
+    if not rpal_exe_location:
+        return # rpal.exe not found
+
+    command = [rpal_exe_location]
+    if options:
+        command.extend(options) # e.g., ['-ast']
+    command.append(rpal_file_path)
+
+    print(f"Executing: {' '.join(command)}", file=sys.stderr) # For debugging
+
+    try:
+        # The directory containing rpal.exe (and cygwin1.dll) should ideally be
+        # in the system PATH, or you can set the working directory for the subprocess.
+        # Setting cwd might help rpal.exe find cygwin1.dll if they are in the same dir.
+        process = subprocess.run(command, capture_output=True, text=True, check=True,
+                                 cwd=os.path.dirname(rpal_exe_location) if rpal_exe_location != "rpal.exe" else None)
+        print(process.stdout, end='') # Print the output of rpal.exe
+        if process.stderr:
+            print("--- rpal.exe stderr ---", file=sys.stderr)
+            print(process.stderr, file=sys.stderr)
+            print("-----------------------", file=sys.stderr)
+
+    except subprocess.CalledProcessError as e:
+        print(f"Error running rpal.exe for {rpal_file_path}:", file=sys.stderr)
+        print(f"Return code: {e.returncode}", file=sys.stderr)
+        print(f"Stdout:\n{e.stdout}", file=sys.stderr)
+        print(f"Stderr:\n{e.stderr}", file=sys.stderr)
+    except FileNotFoundError:
+        print(f"Error: '{rpal_exe_location}' not found or not executable. Make sure it's in your PATH or the path is correct.", file=sys.stderr)
+    except Exception as e:
+        print(f"An unexpected error occurred while running rpal.exe: {e}", file=sys.stderr)
+
+
+# ... (rest of your main() and handler functions) ...
+
+def handle_original_rpal_eval(rpal_test_file_path): # Renamed arg for clarity
     """
     Handles the original RPAL evaluation.
-
     Args:
-        file_name (str): The name of the file to evaluate.
-
-    Returns:
-        None
+        rpal_test_file_path (str): The path to the .rpal file to evaluate.
     """
     if platform.system() == "Windows":
-        rpal_exe(file_name)
+        run_external_rpal(rpal_test_file_path) # Call the new runner function
     else:
-        print("Original RPAL evaluation is not supported on this operating system.")
+        print("Original RPAL evaluation via rpal.exe is typically Windows-specific.")
+        print("If you have a non-Windows version, adjust 'run_external_rpal'.")
 
-
-def handle_original_rpal_ast(file_name):
+def handle_original_rpal_ast(rpal_test_file_path):
     """
     Handles the original RPAL AST generation.
-
-    Args:
-        file_name (str): The name of the file to generate AST.
-
-    Returns:
-        None
     """
     if platform.system() == "Windows":
-        rpal_exe(file_name, "ast")
+        run_external_rpal(rpal_test_file_path, options=["-ast"])
     else:
-        print("Original RPAL AST generation is not supported on this operating system.")
+        print("Original RPAL AST generation via rpal.exe is typically Windows-specific.")
 
-
-def handle_original_rpal_st(file_name):
+def handle_original_rpal_st(rpal_test_file_path):
     """
     Handles the original RPAL ST generation.
-
-    Args:
-        file_name (str): The name of the file to generate ST.
-
-    Returns:
-        None
     """
     if platform.system() == "Windows":
-        rpal_exe(file_name, "st")
+        run_external_rpal(rpal_test_file_path, options=["-st"])
     else:
-        print("Original RPAL ST generation is not supported on this operating system.")
+        print("Original RPAL ST generation via rpal.exe is typically Windows-specific.")
 
 def handle_cse_table_option(evaluator):
     """
