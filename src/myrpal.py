@@ -2,7 +2,7 @@
 # This script serves as the main entry point for interpreting RPAL programs. It provides functionality to interpret RPAL code, print Abstract Syntax Trees (ASTs), tokens, and filtered tokens, as well as execute the original RPAL interpreter on a file and print the AST.
 
 # Usage:
-# python main.py [-ast] [-t] [-ft] [-st] [-r] [-rast] [-ct] file_name
+# python myrpal.py [-ast] [-t] [-ft] [-st] [-r] [-rast] [-ct] file_name
 
 # Arguments:
 # file_name: The name of the RPAL file to interpret.
