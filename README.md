@@ -1,7 +1,5 @@
 # RPAL Interpreter
 
-
-
 A complete interpreter implementation for **RPAL** (Right-reference Pedagogic Algorithmic Language) built as part of CS3513 - Programming Languages module at the University of Moratuwa.
 
 ## 🎯 Overview
@@ -38,34 +36,48 @@ Before running the interpreter, ensure you have:
 2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
+   ```
 
+### Quick Test
 
-Quick Test
-bash# Run the default test using Makefile
+```bash
+# Run the default test using Makefile
 make
 
 # Or run manually
 cd src
 python myrpal.py ../testing_rpal_sources/test1.rpal
-📖 Usage Guide
-Using the Makefile (Recommended)
+```
+
+## 📖 Usage Guide
+
+### Using the Makefile (Recommended)
+
 The project includes a comprehensive Makefile for streamlined development and testing:
-Quick Start Commands
-bash# Run default test (test1.rpal)
+
+#### Quick Start Commands
+```bash
+# Run default test (test1.rpal)
 make
 # or
 make default
 # or  
 make run_test1
-Test Analysis Commands (for test1.rpal)
-bashmake ast_test1          # Generate and display AST
+```
+
+#### Test Analysis Commands (for test1.rpal)
+```bash
+make ast_test1          # Generate and display AST
 make tokens_test1       # Generate and display all tokens
 make ftokens_test1      # Generate and display filtered tokens
 make st_test1           # Generate and display Standardized Tree
 make cse_test1          # Generate and display CSE Table
 make list_src_test1     # List the source code of test1.rpal
-Generic Commands (for any file)
-bash# Run any RPAL file
+```
+
+#### Generic Commands (for any file)
+```bash
+# Run any RPAL file
 make run_file FILE=filename.rpal
 
 # Generate AST for any file
@@ -73,11 +85,17 @@ make ast_file FILE=filename.rpal
 
 # Generate tokens for any file
 make tokens_file FILE=filename.rpal
-Utility Commands
-bashmake clean              # Remove temporary files
+```
+
+#### Utility Commands
+```bash
+make clean              # Remove temporary files
 make help               # Display help message
-Usage Examples
-bash# Test different programs
+```
+
+#### Usage Examples
+```bash
+# Test different programs
 make run_file FILE=test2.rpal
 make run_file FILE=fibonacci.rpal
 
@@ -90,18 +108,7 @@ make tokens_file FILE=my_program.rpal
 
 # Clean up after testing
 make clean
-   ```
-
-### Basic Usage
-
-Navigate to the source directory and run:
-
-```bash
-cd src
-python myrpal.py ../testing_rpal_sources/sample.rpal
 ```
-
-## 📖 Usage Guide
 
 ### Command Line Interface
 
@@ -168,55 +175,45 @@ RPAL Source → Lexer → Parser → Standardizer → CSE Machine → Output
 ## 📁 Project Structure
 
 ```
-LEXIC...
-├── 📁 docs/
-├── 📁 src/
-│   ├── 📁 __pycache__/
-│   ├── 📁 cse_machine/
-│   │   ├── 📁 __pycache__/
-│   │   ├── 📜 binop.py
-│   │   ├── 📜 control_structure.py
-│   │   ├── 📜 environment.py
-│   │   ├── 📜 error_handler.py
-│   │   ├── 📜 machine.py
-│   │   ├── 📜 stack.py
-│   │   ├── 📜 stlinearizer.py
-│   │   ├── 📜 unop.py
-│   │   └── 📜 utils.py
+rpal-interpreter/
+├── 📁 docs/                     # Documentation files
+├── 📁 src/                      # Source code
+│   ├── 📁 cse_machine/          # CSE Machine implementation
+│   │   ├── 📜 binop.py          # Binary operations
+│   │   ├── 📜 control_structure.py # Control structures
+│   │   ├── 📜 environment.py    # Environment management
+│   │   ├── 📜 error_handler.py  # Error handling
+│   │   ├── 📜 machine.py        # Main CSE machine
+│   │   ├── 📜 stack.py          # Stack operations
+│   │   ├── 📜 stlinearizer.py   # ST linearization
+│   │   ├── 📜 unop.py           # Unary operations
+│   │   └── 📜 utils.py          # Utility functions
 │   ├── 📁 interpreter/
-│   │   ├── 📁 __pycache__/
-│   │   └── 📜 interpreter.py
+│   │   └── 📜 interpreter.py    # Main interpreter logic
 │   ├── 📁 lexical_analyzer/
-│   │   ├── 📁 __pycache__/
-│   │   └── 📜 scanner.py
+│   │   └── 📜 scanner.py        # Lexical analysis
 │   ├── 📁 parser/
-│   │   ├── 📁 __pycache__/
-│   │   └── 📜 parser.py
-│   ├── 📁 rpal_source/
+│   │   └── 📜 parser.py         # Syntax analysis
 │   ├── 📁 screener/
-│   │   ├── 📁 __pycache__/
-│   │   └── 📜 screener.py
-│   ├── 📁 standerized_tr.../
-│   │   ├── 📁 __pycache__/
-│   │   └── 📜 build_standar...
-│   ├── 📁 table_routines/
-│   │   ├── 📁 __pycache__/
-│   │   ├── 📜 accept_states.py
-│   │   ├── 📜 char_map.py
-│   │   ├── 📜 fsa_table.py
-│   │   └── 📜 keywords.py
-│   ├── 📁 utils/
-│   │   ├── 📁 __pycache__/
-│   │   ├── 📜 control_structure_e...
-│   │   ├── 📜 file_handler.py
-│   │   ├── 📜 node.py
-│   │   ├── 📜 stack.py
-│   │   ├── 📜 token_printer.py
-│   │   ├── 📜 tokens.py
-│   │   ├── 📜 tree_list.py
-│   │   └── 📜 tree_printer.py
-│   └── 📜 myrpal.py
-├── 📁 testing_rpal_so.../
+│   │   └── 📜 screener.py       # Token filtering
+│   ├── 📁 standardized_tree/
+│   │   └── 📜 build_standardized_tree.py # Tree standardization
+│   ├── 📁 table_routines/       # FSA tables and utilities
+│   │   ├── 📜 accept_states.py  # Acceptance states
+│   │   ├── 📜 char_map.py       # Character mapping
+│   │   ├── 📜 fsa_table.py      # FSA transition table
+│   │   └── 📜 keywords.py       # RPAL keywords
+│   ├── 📁 utils/                # Utility modules
+│   │   ├── 📜 control_structure_entities.py
+│   │   ├── 📜 file_handler.py   # File I/O operations
+│   │   ├── 📜 node.py           # Tree node definitions
+│   │   ├── 📜 stack.py          # Stack data structure
+│   │   ├── 📜 token_printer.py  # Token display utilities
+│   │   ├── 📜 tokens.py         # Token definitions
+│   │   ├── 📜 tree_list.py      # Tree list operations
+│   │   └── 📜 tree_printer.py   # Tree visualization
+│   └── 📜 myrpal.py             # Main entry point
+├── 📁 testing_rpal_sources/     # Test RPAL programs
 │   ├── 📄 test1.rpal
 │   ├── 📄 test2.rpal
 │   ├── 📄 test3.rpal
@@ -227,11 +224,11 @@ LEXIC...
 │   ├── 📄 test8.rpal
 │   ├── 📄 test9.rpal
 │   └── 📄 test10.txt
-├── 📄 .gitignore
-├── 📄 README.md
-└── 📄 requirements.txt
+├── 📄 .gitignore               # Git ignore rules
+├── 📄 Makefile                 # Build automation
+├── 📄 README.md                # This file
+└── 📄 requirements.txt         # Python dependencies
 ```
-
 
 ## 🧪 Testing
 
@@ -239,14 +236,25 @@ The project includes comprehensive test cases in the `testing_rpal_sources/` dir
 
 ```bash
 # Run basic tests
-python myrpal.py ../testing_rpal_sources/basic_ops.rpal
+python myrpal.py ../testing_rpal_sources/test1.rpal
 
-# Test complex programs
-python myrpal.py ../testing_rpal_sources/recursive_functions.rpal
+# Test complex programs  
+python myrpal.py ../testing_rpal_sources/test2.rpal
 
 # Validate against reference implementation
-python myrpal.py ../testing_rpal_sources/complex.rpal > output.txt
+python myrpal.py ../testing_rpal_sources/test3.rpal > output.txt
 ```
+
+### Test Cases
+
+The test suite includes programs that verify:
+- **Basic arithmetic operations**
+- **Function definitions and calls**
+- **Recursive functions**
+- **Conditional expressions**
+- **Tuple operations**
+- **String manipulations**
+- **Complex nested expressions**
 
 ## 🛠️ Development
 
@@ -274,6 +282,36 @@ The interpreter supports the complete RPAL language specification including:
 - **Control Flow**: Conditional expressions, recursion
 - **Functions**: Lambda expressions, function application, currying
 - **Pattern Matching**: Tuple destructuring and parameter binding
+- **Built-in Functions**: Print, arithmetic operations, string operations
+
+### Example RPAL Programs
+
+```rpal
+// Factorial function
+let rec factorial n = 
+    n eq 0 -> 1 | n * factorial (n-1)
+in factorial 5
+
+// Fibonacci sequence
+let rec fib n = 
+    n le 1 -> n | fib(n-1) + fib(n-2)
+in fib 10
+
+// List operations
+let list = (1, 2, 3, 4, 5) in
+let head x = x 1 in
+let tail x = x 2 in
+print head list
+```
+
+## 🐛 Debugging
+
+When encountering issues:
+
+1. **Check syntax**: Use `-ast` to view the parsed tree structure
+2. **Examine tokens**: Use `-t` or `-ft` to inspect tokenization
+3. **Trace execution**: Use `-ct` to see CSE machine states
+4. **Validate input**: Ensure proper RPAL syntax and semantics
 
 ## 🤝 Contributing
 
@@ -284,6 +322,13 @@ This project was developed as part of academic coursework. If you'd like to cont
 3. Commit your changes (`git commit -am 'Add new feature'`)
 4. Push to the branch (`git push origin feature/improvement`)
 5. Create a Pull Request
+
+### Development Guidelines
+
+- Follow existing code style and conventions
+- Add tests for new features
+- Update documentation as needed
+- Ensure compatibility with reference implementation
 
 ## 📄 License
 
@@ -297,6 +342,30 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 This implementation demonstrates practical application of compiler design principles including lexical analysis, syntax analysis, semantic analysis, and code execution.
 
+## 📈 Performance
+
+The interpreter is optimized for:
+- **Memory efficiency**: Proper memory management in CSE machine
+- **Execution speed**: Optimized tree traversal and evaluation
+- **Error handling**: Fast error detection and meaningful error messages
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+1. **Import Errors**: Ensure all dependencies are installed via `pip install -r requirements.txt`
+2. **File Not Found**: Check that RPAL source files exist and paths are correct
+3. **Syntax Errors**: Verify RPAL program syntax matches language specification
+4. **Execution Errors**: Use debug flags to trace program execution
+
+### Error Messages
+
+The interpreter provides detailed error messages including:
+- **Lexical errors**: Invalid characters or malformed tokens
+- **Syntax errors**: Grammar violations with line numbers
+- **Runtime errors**: Type mismatches and undefined variables
+- **Semantic errors**: Invalid operations and scope violations
+
 ## 📞 Support
 
 For questions or issues:
@@ -304,7 +373,22 @@ For questions or issues:
 - 📧 Create an issue in the repository
 - 📖 Refer to the RPAL language documentation in the `docs/` folder
 - 🔍 Check existing test cases for usage examples
+- 💬 Review the source code comments for implementation details
+
+## 🏆 Acknowledgments
+
+- **Dr. [Professor Name]** - Course instructor and guidance
+- **University of Moratuwa** - Academic institution
+- **RPAL Language Specification** - Reference documentation
+- **CS3513 Course Materials** - Theoretical foundation
 
 ---
 
 *Built with ❤️ for the Programming Languages community*
+
+## 📚 Additional Resources
+
+- [RPAL Language Specification](docs/rpal_spec.pdf)
+- [CSE Machine Documentation](docs/cse_machine.md)
+- [Project Report](docs/project_report.pdf)
+- [API Documentation](docs/api_docs.md)
